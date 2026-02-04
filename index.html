@@ -13,7 +13,6 @@
             --deep-green: #1a2a1d;
             --cream: #f8f5f0;
             --blush: #e8d5d1;
-            --wax-red: #7a1616;
         }
 
         body { 
@@ -21,94 +20,43 @@
             color: var(--deep-green);
             font-family: 'Lato', sans-serif; 
             margin: 0;
-            padding: 20px;
             display: flex; 
             justify-content: center; 
             align-items: center;
             min-height: 100vh; 
             transition: background-color 2s ease;
-            overflow-x: hidden;
+            overflow: hidden;
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
-            cursor: default;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: url(https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Grain_Noise.jpg);
-            opacity: 0.04;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .vignette { 
-            position: fixed; inset: 0; 
-            background: radial-gradient(circle, transparent 50%, rgba(26, 42, 29, 0.1)); 
-            pointer-events: none; z-index: 5; 
-        }
-
-        .botanical { 
-            position: fixed; 
-            width: 450px; 
-            opacity: 0.15; 
-            pointer-events: none; 
-            z-index: 0; 
-            animation: breathe 8s ease-in-out infinite; 
-        }
-
+        /* Decorative Elements */
+        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 50%, rgba(26, 42, 29, 0.1)); pointer-events: none; z-index: 5; }
+        .botanical { position: fixed; width: 450px; opacity: 0.15; pointer-events: none; z-index: 0; }
         .top-left { top: -120px; left: -120px; transform: rotate(15deg); }
-        .bottom-right { bottom: -120px; right: -120px; }
+        .bottom-right { bottom: -120px; right: -120px; transform: rotate(195deg); }
 
-        @keyframes breathe {
-            0%, 100% { opacity: 0.15; transform: scale(1) rotate(15deg); }
-            50% { opacity: 0.25; transform: scale(1.05) rotate(17deg); }
-        }
+        #app-container { text-align: center; max-width: 1000px; width: 100%; z-index: 10; padding: 20px; }
 
-        #app-container { text-align: center; width: 100%; max-width: 800px; z-index: 10; }
-
-        /* Branding */
+        /* Branding Headers */
         .isa-tag { font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
         h1.main-title { font-family: 'Pinyon Script', cursive; font-size: 5rem; color: var(--gold); margin: 0; line-height: 1; }
         .sub-theme { font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: 10px; text-transform: uppercase; margin-bottom: 50px; }
 
         /* Deck Area */
-        .deck-area { position: relative; height: 350px; width: 100%; display: flex; justify-content: center; align-items: center; margin: 20px 0; }
+        .deck-area { position: relative; height: 400px; width: 100%; display: flex; justify-content: center; align-items: center; }
         .card {
             position: absolute; width: 180px; height: 260px; background: #fff;
             border-radius: 2px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             cursor: pointer; transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); overflow: hidden;
         }
-        
         .card::after {
             content: ''; position: absolute; inset: 10px; border: 1px solid var(--gold);
-            background-color: var(--deep-green); 
-            background-image: url("https://www.transparenttextures.com/patterns/dark-matter.png");
-            z-index: 1;
+            background-color: var(--deep-green); background-image: url("https://www.transparenttextures.com/patterns/dark-matter.png");
         }
+        .card-crest { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--gold); font-family: 'Playfair Display', serif; font-size: 2rem; z-index: 2; opacity: 0.6; }
 
-        .card-crest { 
-            position: absolute; 
-            top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); 
-            width: 60px; height: 60px;
-            background: var(--wax-red);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 5px rgba(0,0,0,0.5), 2px 5px 15px rgba(0,0,0,0.4);
-            color: var(--gold); 
-            font-family: 'Playfair Display', serif; 
-            font-size: 1.8rem; 
-            z-index: 2; 
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            transition: all 0.5s ease;
-        }
-
-        .card:hover .card-crest { transform: translate(-50%, -55%) scale(1.1); background: #8b0000; }
-
-        /* Result View */
-        #result-screen { display: none; opacity: 0; transition: opacity 1s ease; }
+        /* Result View - This is what gets saved as an image */
+        #result-screen { display: none; opacity: 0; }
         
         #capture-frame {
             background: #fff;
@@ -126,14 +74,16 @@
             border: 0.5px solid var(--gold); pointer-events: none;
         }
 
-        .quote-box { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 1.6rem; 
-            line-height: 1.4; 
-            margin: 40px 0; 
-            font-style: italic;
-        }
+        .result-isa { font-size: 0.55rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 20px; }
+        .result-theme { font-family: 'Pinyon Script', cursive; font-size: 2.8rem; color: var(--deep-green); margin: 0; }
+        .quote-box { font-family: 'Playfair Display', serif; font-size: 1.8rem; line-height: 1.4; margin: 40px 0; font-style: italic; }
+        .quote-author { font-family: 'Lato', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; }
 
+        .recommendation { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 0.5px solid rgba(0,0,0,0.1); text-align: left; }
+        .rec-label { font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); display: block; }
+        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.9rem; }
+
+        /* Buttons */
         .btn-group { margin-top: 40px; display: flex; justify-content: center; gap: 15px; }
         .btn {
             background: none; border: 1px solid var(--gold); padding: 12px 25px;
@@ -142,13 +92,6 @@
         }
         .btn-save { background: var(--gold); color: white; }
         .btn-save:hover { background: var(--deep-green); border-color: var(--deep-green); }
-
-        .result-isa { font-size: 0.55rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 20px; }
-        .result-theme { font-family: 'Pinyon Script', cursive; font-size: 2.8rem; color: var(--deep-green); margin: 0; }
-        .quote-author { font-family: 'Lato', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; }
-        .recommendation { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 0.5px solid rgba(0,0,0,0.1); text-align: left; gap: 10px; }
-        .rec-label { font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); display: block; }
-        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.85rem; }
 
         @media (max-width: 450px) {
             #capture-frame { width: 85vw; padding: 40px 20px; }
@@ -169,7 +112,7 @@
             <p class="sub-theme">The Secret Garden</p>
             
             <div class="deck-area" id="deck-container"></div>
-            <p id="status-text" style="margin-top: 40px; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;">Tap the seal to begin</p>
+            <p id="status-text" style="margin-top: 40px; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;">Tap the deck to begin</p>
         </div>
 
         <div id="result-screen">
@@ -195,6 +138,7 @@
                 <button class="btn" onclick="location.reload()">Reset</button>
                 <button class="btn btn-save" onclick="saveImage()">Save Picture</button>
             </div>
+            <p style="font-size: 0.6rem; margin-top: 20px; opacity: 0.5; letter-spacing: 1px;">Saved to your downloads folder</p>
         </div>
     </div>
 
@@ -218,28 +162,22 @@
                 { name: "Ash Rose", hex: "#e6dede", quote: "Grief is the final manifestation of love.", source: "Joan Didion", movie: "Aftersun", movieDesc: "A portrait of memory.",  book: "Blue Nights", bookDesc: "A meditation on loss." }
         ];
 
+        const deck = document.getElementById('deck-container');
+        const status = document.getElementById('status-text');
         let shuffleState = 0; 
-        const deckContainer = document.getElementById('deck-container');
-        const statusText = document.getElementById('status-text');
 
         function createDeck() {
-            deckContainer.innerHTML = '';
             for(let i=0; i<12; i++) {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.zIndex = i;
                 card.innerHTML = '<div class="card-crest">❦</div>';
                 card.style.transform = `translate(${i*0.5}px, ${i*0.5}px)`;
-                card.onclick = handleCardClick;
-                deckContainer.appendChild(card);
-            }
-        }
-
-        function handleCardClick() {
-            if (shuffleState < 3) {
-                runShuffle();
-            } else if (shuffleState === 4) {
-                revealCard();
+                card.onclick = () => {
+                    if (shuffleState < 3) runShuffle();
+                    else if (shuffleState === 4) revealCard();
+                };
+                deck.appendChild(card);
             }
         }
 
@@ -247,30 +185,25 @@
             shuffleState++;
             const cards = document.querySelectorAll('.card');
             cards.forEach((card) => {
-                const rx = (Math.random() - 0.5) * 350;
-                const ry = (Math.random() - 0.5) * 350;
-                const rr = (Math.random() - 0.5) * 90;
+                const rx = (Math.random() - 0.5) * 400;
+                const ry = (Math.random() - 0.5) * 400;
+                const rr = (Math.random() - 0.5) * 100;
                 card.style.transform = `translate(${rx}px, ${ry}px) rotate(${rr}deg)`;
             });
-            statusText.innerText = `Preparing your heart... (${shuffleState}/3)`;
-            
+            status.innerText = `Shuffling Intentions... (${shuffleState}/3)`;
             setTimeout(() => {
-                cards.forEach((card, i) => {
-                    card.style.transform = `translate(${i*0.3}px, ${i*0.3}px) rotate(0deg)`;
-                });
-                if (shuffleState === 3) {
-                    setTimeout(fanCards, 600);
-                }
+                cards.forEach((card, i) => card.style.transform = `translate(${i*0.3}px, ${i*0.3}px) rotate(0deg)`);
+                if (shuffleState === 3) setTimeout(fanCards, 600);
             }, 800);
         }
 
         function fanCards() {
-            shuffleState = 4;
-            statusText.innerText = "Break the seal to reveal";
             const cards = document.querySelectorAll('.card');
+            shuffleState = 4;
+            status.innerText = "Draw your heart's secret";
             cards.forEach((card, i) => {
                 const angle = (i - 5.5) * 8;
-                const x = (i - 5.5) * 35;
+                const x = (i - 5.5) * 40;
                 card.style.transform = `translate(${x}px, 20px) rotate(${angle}deg)`;
             });
         }
@@ -278,43 +211,33 @@
         function revealCard() {
             const data = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             document.getElementById('ritual-screen').style.opacity = '0';
-            
+            document.body.style.backgroundColor = data.hex;
             setTimeout(() => {
                 document.getElementById('ritual-screen').style.display = 'none';
-                document.body.style.backgroundColor = data.hex;
-                document.getElementById('capture-frame').style.backgroundColor = data.hex;
-                
+                document.getElementById('result-screen').style.display = 'block';
                 document.getElementById('quote-text').innerText = data.quote;
                 document.getElementById('quote-source').innerText = `— ${data.source}`;
                 document.getElementById('movie-title').innerText = data.movie;
                 document.getElementById('book-title').innerText = data.book;
-                
-                const resultScreen = document.getElementById('result-screen');
-                resultScreen.style.display = 'block';
-                setTimeout(() => { resultScreen.style.opacity = '1'; }, 50);
-            }, 800);
+                setTimeout(() => { document.getElementById('result-screen').style.opacity = '1'; }, 100);
+            }, 1000);
         }
 
+        // The Save Image Function
         function saveImage() {
             const captureArea = document.getElementById('capture-frame');
-            const btn = document.querySelector('.btn-save');
-            btn.innerText = "Capturing...";
-            
-            html2canvas(captureArea, { 
-                scale: 3,
-                useCORS: true,
-                backgroundColor: null
+            html2canvas(captureArea, {
+                backgroundColor: null,
+                scale: 2 // Higher quality
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'ISA_HeartToHeart.png';
+                link.download = 'HeartToHeart_ISA.png';
                 link.href = canvas.toDataURL("image/png");
                 link.click();
-                btn.innerText = "Save Picture";
             });
         }
 
-        // Initialize when page loads
-        window.onload = createDeck;
+        createDeck();
     </script>
 </body>
 </html>
