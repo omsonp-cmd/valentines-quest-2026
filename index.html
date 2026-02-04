@@ -21,15 +21,15 @@
             color: var(--deep-green);
             font-family: 'Lato', sans-serif; 
             margin: 0;
+            padding: 20px;
             display: flex; 
             justify-content: center; 
             align-items: center;
             min-height: 100vh; 
             transition: background-color 2s ease;
-            overflow: hidden;
+            overflow-x: hidden;
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
-            /* The Grain Overlay */
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="fill:rgba(197, 160, 89, 0.5)"><circle cx="10" cy="10" r="5"/></svg>'), auto;
+            cursor: default;
         }
 
         body::before {
@@ -43,33 +43,30 @@
             z-index: 9999;
         }
 
-       /* Decorative Elements */
-.vignette { 
-    position: fixed; inset: 0; 
-    background: radial-gradient(circle, transparent 50%, rgba(26, 42, 29, 0.1)); 
-    pointer-events: none; z-index: 5; 
-}
+        .vignette { 
+            position: fixed; inset: 0; 
+            background: radial-gradient(circle, transparent 50%, rgba(26, 42, 29, 0.1)); 
+            pointer-events: none; z-index: 5; 
+        }
 
-.botanical { 
-    position: fixed; 
-    width: 450px; 
-    opacity: 0.15; 
-    pointer-events: none; 
-    z-index: 0; 
-    /* ADD THIS LINE BELOW */
-    animation: breathe 8s ease-in-out infinite; 
-}
+        .botanical { 
+            position: fixed; 
+            width: 450px; 
+            opacity: 0.15; 
+            pointer-events: none; 
+            z-index: 0; 
+            animation: breathe 8s ease-in-out infinite; 
+        }
 
-.top-left { top: -120px; left: -120px; transform: rotate(15deg); }
-/* We remove the static transform from bottom-right to let the animation take over 
-   or adjust the keyframes specifically for it. For now, this works: */
-.bottom-right { bottom: -120px; right: -120px; }
+        .top-left { top: -120px; left: -120px; transform: rotate(15deg); }
+        .bottom-right { bottom: -120px; right: -120px; }
 
-/* ADD THE KEYFRAMES AT THE BOTTOM OF YOUR STYLE TAG */
-@keyframes breathe {
-    0%, 100% { opacity: 0.15; transform: scale(1) rotate(15deg); }
-    50% { opacity: 0.25; transform: scale(1.05) rotate(17deg); }
-}
+        @keyframes breathe {
+            0%, 100% { opacity: 0.15; transform: scale(1) rotate(15deg); }
+            50% { opacity: 0.25; transform: scale(1.05) rotate(17deg); }
+        }
+
+        #app-container { text-align: center; width: 100%; max-width: 800px; z-index: 10; }
 
         /* Branding */
         .isa-tag { font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
@@ -77,7 +74,7 @@
         .sub-theme { font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: 10px; text-transform: uppercase; margin-bottom: 50px; }
 
         /* Deck Area */
-        .deck-area { position: relative; height: 400px; width: 100%; display: flex; justify-content: center; align-items: center; }
+        .deck-area { position: relative; height: 350px; width: 100%; display: flex; justify-content: center; align-items: center; margin: 20px 0; }
         .card {
             position: absolute; width: 180px; height: 260px; background: #fff;
             border-radius: 2px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
@@ -91,7 +88,6 @@
             z-index: 1;
         }
 
-        /* The Wax Seal */
         .card-crest { 
             position: absolute; 
             top: 50%; left: 50%; 
@@ -112,7 +108,7 @@
         .card:hover .card-crest { transform: translate(-50%, -55%) scale(1.1); background: #8b0000; }
 
         /* Result View */
-        #result-screen { display: none; opacity: 0; }
+        #result-screen { display: none; opacity: 0; transition: opacity 1s ease; }
         
         #capture-frame {
             background: #fff;
@@ -132,19 +128,12 @@
 
         .quote-box { 
             font-family: 'Playfair Display', serif; 
-            font-size: 1.8rem; 
+            font-size: 1.6rem; 
             line-height: 1.4; 
             margin: 40px 0; 
             font-style: italic;
-            animation: fadeInReveal 2.5s ease-out;
         }
 
-        @keyframes fadeInReveal {
-            from { opacity: 0; transform: translateY(10px); filter: blur(5px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        /* Buttons */
         .btn-group { margin-top: 40px; display: flex; justify-content: center; gap: 15px; }
         .btn {
             background: none; border: 1px solid var(--gold); padding: 12px 25px;
@@ -157,9 +146,9 @@
         .result-isa { font-size: 0.55rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 20px; }
         .result-theme { font-family: 'Pinyon Script', cursive; font-size: 2.8rem; color: var(--deep-green); margin: 0; }
         .quote-author { font-family: 'Lato', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; }
-        .recommendation { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 0.5px solid rgba(0,0,0,0.1); text-align: left; }
+        .recommendation { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 30px; border-top: 0.5px solid rgba(0,0,0,0.1); text-align: left; gap: 10px; }
         .rec-label { font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); display: block; }
-        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.9rem; }
+        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.85rem; }
 
         @media (max-width: 450px) {
             #capture-frame { width: 85vw; padding: 40px 20px; }
@@ -210,102 +199,123 @@
     </div>
 
     <script>
-const colorPalette = [
-    { name: "Ivory Silk", hex: "#fffdf0", quote: "To love at all is to be vulnerable.", source: "C.S. Lewis", movie: "Shadowlands", movieDesc: "Love understood through loss.", book: "The Four Loves", bookDesc: "A philosophical anatomy of affection." }, 
-    { name: "Vintage Champagne", hex: "#f5ead0", quote: "Love is not blind; it sees more, not less.", source: "Erich Fromm", movie: "In the Mood for Love", movieDesc: "Restraint and recognition without possession.", book: "A Lover's Discourse", bookDesc: "Love experienced as a series of fragments." }, 
-    { name: "Tudor Rose", hex: "#fce3e3", quote: "Everything that frightens us is something helpless that wants our love.", source: "Rainer Maria Rilke", movie: "The Shape of Water", movieDesc: "Tenderness toward the unfamiliar.", book: "Letters to a Young Poet", bookDesc: "Solitude as the ground of mature love." }, 
-    { name: "English Lavender", hex: "#e8e1f5", quote: "It is not necessary to hurry intimacy.", source: "Anne Carson", movie: "Before Sunset", movieDesc: "Connection shaped by time.", book: "Eros the Bittersweet", bookDesc: "Desire defined by distance." }, 
-    { name: "Versailles Sage", hex: "#e2ede4", quote: "The world is full of magic things, patiently waiting for our senses to grow sharper.", source: "W.B. Yeats", movie: "Song of the Sea", movieDesc: "Myth as a form of care.", book: "The Wind Among the Reeds", bookDesc: "Poetry of perception and longing." }, 
-    { name: "Gilded Moss", hex: "#ecebbd", quote: "The only way to make sense out of change is to plunge into it.", source: "Alan Watts", movie: "Spring, Summer, Fall, Winter... and Spring", movieDesc: "The cyclical nature of the soul.", book: "The Wisdom of Insecurity", bookDesc: "Finding love in the ephemeral." }, 
-    { name: "Biedermeier Blue", hex: "#e0f0f5", quote: "Loneliness is the poverty of self; solitude is the richness of self.", source: "May Sarton", movie: "Lost in Translation", movieDesc: "Distance without deficiency.", book: "Journal of a Solitude", bookDesc: "A defense of the inner life." }, 
-    { name: "Old Manor Taupe", hex: "#ede6e1", quote: "Acceptance is a small, quiet room.", source: "Cheryl Strayed", movie: "Nomadland", movieDesc: "Dignity without possession.", book: "Tiny Beautiful Things", bookDesc: "Love as presence." }, 
-    { name: "Terracotta Sundial", hex: "#f5e6d3", quote: "Beauty is in things imperfect, impermanent, and incomplete.", source: "Leonard Koren", movie: "Arrietty", movieDesc: "Care without ownership.", book: "The Beauty of the Ordinary", bookDesc: "Everyday aesthetics." }, 
-    { name: "Slate Manor", hex: "#e1e6e8", quote: "Love is the extremely difficult realization that something other than oneself is real.", source: "Iris Murdoch", movie: "Eternal Sunshine of the Spotless Mind", movieDesc: "The messy reality of modern memory.", book: "The Sovereignty of Good", bookDesc: "Love as the destruction of the ego." }, 
-    { name: "Linen Prayer", hex: "#fcfaf7", quote: "Love is not a relationship between one person and another, but a relationship between a person and love itself.", source: "Søren Kierkegaard", movie: "Still Walking", movieDesc: "Care expressed through repetition.", book: "Works of Love", bookDesc: "An ethical account of love." }, 
-    { name: "Orchard Ash", hex: "#f0f0f0", quote: "Love, by its very nature, is unworldly.", source: "Hannah Arendt", movie: "A Hidden Life", movieDesc: "Love that refuses usefulness.", book: "The Human Condition", bookDesc: "Love, labor, and political life." }, 
-    { name: "Cemetery Stone", hex: "#e3e3e3", quote: "To be alone is to be with the world without intermediaries.", source: "Maurice Blanchot", movie: "Taste of Cherry", movieDesc: "Existence without narrative.", book: "The Space of Literature", bookDesc: "Solitude as encounter." }, 
-    { name: "Pale Concrete", hex: "#ededeb", quote: "Nothing is missing. Something is simply not added.", source: "Gilles Deleuze", movie: "Columbus", movieDesc: "Meaning found without completion.", book: "Negotiations", bookDesc: "Absence understood as difference." },
-    { name: "Oat Chapel", hex: "#f3eddc", quote: "Love is an act of faith, and whoever is of little faith is also of little love.", source: "Erich Fromm", movie: "Ordet", movieDesc: "Love understood as faith.", book: "The Art of Loving", bookDesc: "Love as a skill, not a feeling." }, 
-    { name: "Ash Rose", hex: "#e6dede", quote: "Grief is the final manifestation of love.", source: "Joan Didion", movie: "Aftersun", movieDesc: "A portrait of memory.",  book: "Blue Nights", bookDesc: "A meditation on loss." }
-];
+        const colorPalette = [
+                { name: "Ivory Silk", hex: "#fffdf0", quote: "To love at all is to be vulnerable.", source: "C.S. Lewis", movie: "Shadowlands", movieDesc: "Love understood through loss.", book: "The Four Loves", bookDesc: "A philosophical anatomy of affection." }, 
+                { name: "Vintage Champagne", hex: "#f5ead0", quote: "Love is not blind; it sees more, not less.", source: "Erich Fromm", movie: "In the Mood for Love", movieDesc: "Restraint and recognition without possession.", book: "A Lover's Discourse", bookDesc: "Love experienced as a series of fragments." }, 
+                { name: "Tudor Rose", hex: "#fce3e3", quote: "Everything that frightens us is something helpless that wants our love.", source: "Rainer Maria Rilke", movie: "The Shape of Water", movieDesc: "Tenderness toward the unfamiliar.", book: "Letters to a Young Poet", bookDesc: "Solitude as the ground of mature love." }, 
+                { name: "English Lavender", hex: "#e8e1f5", quote: "It is not necessary to hurry intimacy.", source: "Anne Carson", movie: "Before Sunset", movieDesc: "Connection shaped by time.", book: "Eros the Bittersweet", bookDesc: "Desire defined by distance." }, 
+                { name: "Versailles Sage", hex: "#e2ede4", quote: "The world is full of magic things, patiently waiting for our senses to grow sharper.", source: "W.B. Yeats", movie: "Song of the Sea", movieDesc: "Myth as a form of care.", book: "The Wind Among the Reeds", bookDesc: "Poetry of perception and longing." }, 
+                { name: "Gilded Moss", hex: "#ecebbd", quote: "The only way to make sense out of change is to plunge into it.", source: "Alan Watts", movie: "Spring, Summer, Fall, Winter... and Spring", movieDesc: "The cyclical nature of the soul.", book: "The Wisdom of Insecurity", bookDesc: "Finding love in the ephemeral." }, 
+                { name: "Biedermeier Blue", hex: "#e0f0f5", quote: "Loneliness is the poverty of self; solitude is the richness of self.", source: "May Sarton", movie: "Lost in Translation", movieDesc: "Distance without deficiency.", book: "Journal of a Solitude", bookDesc: "A defense of the inner life." }, 
+                { name: "Old Manor Taupe", hex: "#ede6e1", quote: "Acceptance is a small, quiet room.", source: "Cheryl Strayed", movie: "Nomadland", movieDesc: "Dignity without possession.", book: "Tiny Beautiful Things", bookDesc: "Love as presence." }, 
+                { name: "Terracotta Sundial", hex: "#f5e6d3", quote: "Beauty is in things imperfect, impermanent, and incomplete.", source: "Leonard Koren", movie: "Arrietty", movieDesc: "Care without ownership.", book: "The Beauty of the Ordinary", bookDesc: "Everyday aesthetics." }, 
+                { name: "Slate Manor", hex: "#e1e6e8", quote: "Love is the extremely difficult realization that something other than oneself is real.", source: "Iris Murdoch", movie: "Eternal Sunshine of the Spotless Mind", movieDesc: "The messy reality of modern memory.", book: "The Sovereignty of Good", bookDesc: "Love as the destruction of the ego." }, 
+                { name: "Linen Prayer", hex: "#fcfaf7", quote: "Love is not a relationship between one person and another, but a relationship between a person and love itself.", source: "Søren Kierkegaard", movie: "Still Walking", movieDesc: "Care expressed through repetition.", book: "Works of Love", bookDesc: "An ethical account of love." }, 
+                { name: "Orchard Ash", hex: "#f0f0f0", quote: "Love, by its very nature, is unworldly.", source: "Hannah Arendt", movie: "A Hidden Life", movieDesc: "Love that refuses usefulness.", book: "The Human Condition", bookDesc: "Love, labor, and political life." }, 
+                { name: "Cemetery Stone", hex: "#e3e3e3", quote: "To be alone is to be with the world without intermediaries.", source: "Maurice Blanchot", movie: "Taste of Cherry", movieDesc: "Existence without narrative.", book: "The Space of Literature", bookDesc: "Solitude as encounter." }, 
+                { name: "Pale Concrete", hex: "#ededeb", quote: "Nothing is missing. Something is simply not added.", source: "Gilles Deleuze", movie: "Columbus", movieDesc: "Meaning found without completion.", book: "Negotiations", bookDesc: "Absence understood as difference." },
+                { name: "Oat Chapel", hex: "#f3eddc", quote: "Love is an act of faith, and whoever is of little faith is also of little love.", source: "Erich Fromm", movie: "Ordet", movieDesc: "Love understood as faith.", book: "The Art of Loving", bookDesc: "Love as a skill, not a feeling." }, 
+                { name: "Ash Rose", hex: "#e6dede", quote: "Grief is the final manifestation of love.", source: "Joan Didion", movie: "Aftersun", movieDesc: "A portrait of memory.",  book: "Blue Nights", bookDesc: "A meditation on loss." }
+        ];
 
-const deck = document.getElementById('deck-container');
-const status = document.getElementById('status-text');
-let shuffleState = 0; 
+        let shuffleState = 0; 
+        const deckContainer = document.getElementById('deck-container');
+        const statusText = document.getElementById('status-text');
 
-function createDeck() {
-    for(let i=0; i<12; i++) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.zIndex = i;
-        card.innerHTML = '<div class="card-crest">❦</div>';
-        card.style.transform = `translate(${i*0.5}px, ${i*0.5}px)`;
-        card.onclick = () => {
-            if (shuffleState < 3) runShuffle();
-            else if (shuffleState === 4) revealCard();
-        };
-        deck.appendChild(card);
-    }
-}
+        function createDeck() {
+            deckContainer.innerHTML = '';
+            for(let i=0; i<12; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.zIndex = i;
+                card.innerHTML = '<div class="card-crest">❦</div>';
+                card.style.transform = `translate(${i*0.5}px, ${i*0.5}px)`;
+                card.onclick = handleCardClick;
+                deckContainer.appendChild(card);
+            }
+        }
 
-function runShuffle() {
-    shuffleState++;
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card) => {
-        const rx = (Math.random() - 0.5) * 400;
-        const ry = (Math.random() - 0.5) * 400;
-        const rr = (Math.random() - 0.5) * 100;
-        card.style.transform = `translate(${rx}px, ${ry}px) rotate(${rr}deg)`;
-    });
-    status.innerText = `Preparing your heart... (${shuffleState}/3)`;
-    setTimeout(() => {
-        cards.forEach((card, i) => card.style.transform = `translate(${i*0.3}px, ${i*0.3}px) rotate(0deg)`);
-        if (shuffleState === 3) setTimeout(fanCards, 600);
-    }, 800);
-}
+        function handleCardClick() {
+            if (shuffleState < 3) {
+                runShuffle();
+            } else if (shuffleState === 4) {
+                revealCard();
+            }
+        }
 
-function fanCards() {
-    const cards = document.querySelectorAll('.card');
-    shuffleState = 4;
-    status.innerText = "Break the seal to reveal";
-    cards.forEach((card, i) => {
-        const angle = (i - 5.5) * 8;
-        const x = (i - 5.5) * 40;
-        card.style.transform = `translate(${x}px, 20px) rotate(${angle}deg)`;
-    });
-}
+        function runShuffle() {
+            shuffleState++;
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card) => {
+                const rx = (Math.random() - 0.5) * 350;
+                const ry = (Math.random() - 0.5) * 350;
+                const rr = (Math.random() - 0.5) * 90;
+                card.style.transform = `translate(${rx}px, ${ry}px) rotate(${rr}deg)`;
+            });
+            statusText.innerText = `Preparing your heart... (${shuffleState}/3)`;
+            
+            setTimeout(() => {
+                cards.forEach((card, i) => {
+                    card.style.transform = `translate(${i*0.3}px, ${i*0.3}px) rotate(0deg)`;
+                });
+                if (shuffleState === 3) {
+                    setTimeout(fanCards, 600);
+                }
+            }, 800);
+        }
 
-function revealCard() {
-    const data = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-    document.getElementById('ritual-screen').style.opacity = '0';
-    document.body.style.backgroundColor = data.hex;
-    document.getElementById('capture-frame').style.backgroundColor = data.hex;
+        function fanCards() {
+            shuffleState = 4;
+            statusText.innerText = "Break the seal to reveal";
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, i) => {
+                const angle = (i - 5.5) * 8;
+                const x = (i - 5.5) * 35;
+                card.style.transform = `translate(${x}px, 20px) rotate(${angle}deg)`;
+            });
+        }
 
-    setTimeout(() => {
-        document.getElementById('ritual-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'block';
-        document.getElementById('quote-text').innerText = data.quote;
-        document.getElementById('quote-source').innerText = `— ${data.source}`;
-        document.getElementById('movie-title').innerText = data.movie;
-        document.getElementById('book-title').innerText = data.book;
-        setTimeout(() => { document.getElementById('result-screen').style.opacity = '1'; }, 100);
-    }, 1000);
-}
+        function revealCard() {
+            const data = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+            document.getElementById('ritual-screen').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('ritual-screen').style.display = 'none';
+                document.body.style.backgroundColor = data.hex;
+                document.getElementById('capture-frame').style.backgroundColor = data.hex;
+                
+                document.getElementById('quote-text').innerText = data.quote;
+                document.getElementById('quote-source').innerText = `— ${data.source}`;
+                document.getElementById('movie-title').innerText = data.movie;
+                document.getElementById('book-title').innerText = data.book;
+                
+                const resultScreen = document.getElementById('result-screen');
+                resultScreen.style.display = 'block';
+                setTimeout(() => { resultScreen.style.opacity = '1'; }, 50);
+            }, 800);
+        }
 
-function saveImage() {
-    const captureArea = document.getElementById('capture-frame');
-    
-    // Ensure all fonts are loaded before capturing
-    document.fonts.ready.then(() => {
-        html2canvas(captureArea, { 
-            backgroundColor: null, 
-            scale: 3, // Higher scale for crisper social media sharing
-            useCORS: true // Helps if you ever host images externally
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'HeartToHeart_ISA.png';
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        });
-    });
-}
+        function saveImage() {
+            const captureArea = document.getElementById('capture-frame');
+            const btn = document.querySelector('.btn-save');
+            btn.innerText = "Capturing...";
+            
+            html2canvas(captureArea, { 
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'ISA_HeartToHeart.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                btn.innerText = "Save Picture";
+            });
+        }
+
+        // Initialize when page loads
+        window.onload = createDeck;
+    </script>
+</body>
+</html>
+
