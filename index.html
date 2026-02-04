@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Secret Valentine</title>
+    <style>
+        body {
+            background-color: #ffebee;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+        #game-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            z-index: 10;
+        }
+        h1 { color: #d32f2f; }
+        .btn {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: scale(1.1); }
+        .hidden { display: none; }
+        #moving-btn { position: absolute; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="level1">
+            <h1>Will you be my Valentine? ❤️</h1>
+            <p>Choose wisely...</p>
+            <button class="btn" onclick="nextLevel()">YES!</button>
+            <button class="btn" id="no-btn" onmouseover="moveButton()">No</button>
+        </div>
+
+        <div id="level2" class="hidden">
+            <h1>Yay! 🥂</h1>
+            <p>I knew you'd say yes. You're the best thing that ever happened to me.</p>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHY5NjVqZGV4ZzR0bm8zam5ueGZ6bmV4ZzR0bm8zam5ueGZ6bmV4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/MDJ9IbxxvDUQM/giphy.gif" width="200" alt="Cute Cat">
+            <br><br>
+            <p><strong>Our Date: Feb 14th @ 7PM</strong></p>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function nextLevel() {
+            document.getElementById('level1').classList.add('hidden');
+            document.getElementById('level2').classList.remove('hidden');
+            startConfetti();
+        }
+    </script>
+</body>
+</html>
