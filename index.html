@@ -12,7 +12,7 @@
             --gold: #c5a059;
             --deep-green: #1a2a1d;
             --cream: #f8f5f0;
-            --chula-pink: #ed82ad;
+            --overlay: rgba(255, 255, 255, 0.8);
         }
 
         body { 
@@ -23,10 +23,11 @@
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
         }
 
-        /* Falling Petals Background */
+        /* Elegant Falling Petals */
         .petal {
             position: fixed; top: -10%; z-index: 1;
             pointer-events: none; animation: fall linear infinite;
+            filter: sepia(0.3) opacity(0.6);
         }
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
@@ -34,7 +35,7 @@
 
         #app-container { text-align: center; max-width: 1100px; width: 100%; z-index: 10; padding: 20px; }
 
-        /* Card Deck */
+        /* Deck Area */
         .deck-area { position: relative; height: 350px; display: flex; justify-content: center; align-items: center; }
         .card {
             position: absolute; width: 180px; height: 260px; background: #fff;
@@ -47,94 +48,103 @@
         }
 
         /* Result View */
-        #result-screen { display: none; opacity: 0; transition: 1.5s ease; }
+        #result-screen { display: none; opacity: 0; transition: 1s ease; }
         
         #capture-frame {
-            background: #fff; padding: 45px; width: 350px; min-height: 520px;
-            margin: 0 auto; position: relative; border: 1px solid rgba(197, 160, 89, 0.3);
+            background: #fff; padding: 40px; width: 360px; min-height: 520px;
+            margin: 0 auto; position: relative; border: 1px solid rgba(197, 160, 89, 0.2);
             background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
-            box-shadow: 0 30px 60px rgba(0,0,0,0.1); overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.1); overflow: hidden;
         }
 
-        /* Name Input Overlay */
+        /* Branding & Name Input */
+        .isa-header { font-size: 0.55rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-top: 10px; }
+        .name-container { margin: 15px 0 30px; }
+        .for-label { font-family: 'Playfair Display', serif; font-size: 0.8rem; font-style: italic; color: #888; }
         .user-name-input {
-            font-family: 'Playfair Display', serif; font-size: 0.9rem;
-            border: none; border-bottom: 0.5px solid var(--gold);
-            text-align: center; color: var(--gold); background: transparent;
-            width: 80%; outline: none; margin-bottom: 10px; letter-spacing: 2px;
+            font-family: 'Pinyon Script', cursive; font-size: 1.8rem;
+            border: none; border-bottom: 0.5px solid rgba(197, 160, 89, 0.3);
+            text-align: center; color: var(--deep-green); background: transparent;
+            width: 70%; outline: none;
         }
 
-        /* Decorative Graphic Elements */
+        /* Graphics for Decoration */
         .graphic-item {
             position: absolute; cursor: move; z-index: 100;
-            width: 80px; transition: transform 0.2s;
+            width: 90px; transition: transform 0.2s;
             user-select: none; -webkit-user-drag: none;
         }
 
-        /* Toolbar */
+        /* Atelier Toolbar */
         .atelier-toolbar {
-            margin-top: 25px; display: inline-flex; gap: 15px;
-            background: white; padding: 12px 25px; border-radius: 50px;
-            border: 1px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 25px; display: inline-flex; gap: 20px;
+            background: var(--overlay); padding: 15px 30px; border-radius: 50px;
+            border: 1px solid var(--gold); backdrop-filter: blur(5px);
         }
         .tool-img {
-            width: 40px; height: 40px; object-fit: contain;
-            cursor: pointer; transition: 0.3s; filter: sepia(0.5);
+            width: 45px; height: 45px; object-fit: contain;
+            cursor: pointer; transition: 0.3s; opacity: 0.7;
         }
-        .tool-img:hover { transform: scale(1.2); filter: sepia(0); }
+        .tool-img:hover { transform: translateY(-5px) scale(1.1); opacity: 1; }
 
-        .quote-box { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin: 40px 0 15px; font-style: italic; line-height: 1.3; }
-        .quote-author { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; }
+        .quote-box { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin: 30px 0 10px; font-style: italic; line-height: 1.4; position: relative; z-index: 10; }
+        .quote-author { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; margin-bottom: 30px; }
 
-        .rec-row { display: flex; justify-content: space-between; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: left; }
-        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.8rem; display: block; }
+        .rec-row { display: flex; justify-content: space-between; margin-top: 30px; border-top: 0.5px solid #eee; padding-top: 20px; text-align: left; }
+        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.8rem; display: block; margin-top: 4px; }
 
         .btn {
-            background: none; border: 1px solid var(--gold); padding: 12px 25px;
+            background: none; border: 1px solid var(--gold); padding: 12px 28px;
             text-transform: uppercase; letter-spacing: 2px; font-size: 0.7rem;
             cursor: pointer; transition: 0.3s; margin: 10px;
         }
         .btn-save { background: var(--gold); color: white; }
+        .btn:hover { background: var(--deep-green); color: white; border-color: var(--deep-green); }
+
+        .hint { font-size: 0.6rem; opacity: 0.4; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <audio id="snd-shuffle" src="https://assets.mixkit.co/active_storage/sfx/2042/2042-preview.mp3"></audio>
-    <audio id="snd-reveal" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
-
     <div id="app-container">
         <div id="ritual-screen">
-            <h1 class="main-title" style="font-family: 'Pinyon Script', cursive; font-size: 5rem; color: var(--gold); margin:0;">Heart to Heart</h1>
-            <p style="letter-spacing: 10px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 40px;">The Secret Garden</p>
+            <p style="letter-spacing: 5px; font-size: 0.6rem; opacity: 0.7;">ISA CHULALONGKORN PRESENTS</p>
+            <h1 style="font-family: 'Pinyon Script', cursive; font-size: 5.5rem; color: var(--gold); margin: 0;">Heart to Heart</h1>
+            <p style="letter-spacing: 8px; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 40px;">The Secret Garden</p>
             <div class="deck-area" id="deck-container"></div>
-            <p id="status-text" style="letter-spacing: 3px; font-size: 0.7rem; margin-top: 30px;">CLICK TO BEGIN THE RITUAL</p>
+            <p id="status-text" style="letter-spacing: 3px; font-size: 0.7rem; margin-top: 30px; opacity: 0.6;">CLICK THE DECK TO SHUFFLE</p>
         </div>
 
         <div id="result-screen">
             <div id="capture-frame">
-                <input type="text" class="user-name-input" placeholder="Type your name here..." maxlength="25">
-                <p style="font-size: 0.5rem; letter-spacing: 4px; color: var(--gold); margin: 5px 0;">ISA CHULALONGKORN</p>
+                <div class="isa-header">From ISA Chulalongkorn</div>
+                <div class="name-container">
+                    <span class="for-label">For</span><br>
+                    <input type="text" class="user-name-input" placeholder="Your Name" maxlength="20">
+                </div>
+
                 <div class="quote-box" id="quote-text"></div>
                 <div class="quote-author" id="quote-source"></div>
                 
                 <div class="rec-row">
-                    <div><span style="font-size:0.5rem; color:var(--gold)">CINEMATIC</span><span class="rec-val" id="movie-title"></span></div>
-                    <div><span style="font-size:0.5rem; color:var(--gold)">LITERARY</span><span class="rec-val" id="book-title"></span></div>
+                    <div><span style="font-size:0.5rem; color:var(--gold); letter-spacing:1px;">CINEMATIC</span><span class="rec-val" id="movie-title"></span></div>
+                    <div><span style="font-size:0.5rem; color:var(--gold); letter-spacing:1px;">LITERARY</span><span class="rec-val" id="book-title"></span></div>
                 </div>
             </div>
 
             <div class="atelier-toolbar">
-                <img src="https://ouch-cdn2.icons8.com/PAn-gO-x6_mI67pW1f03f7X0n5N0m_D1k6D3f8F_f_0/rs:fit:368:368/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9zdmcvMTgz/LzE0ZGI3NjMwLTkz/ZjctNDBkMi1hNDFh/LTQ2ZDZlZjBhYjM1/MS5zdmc.png" class="tool-img" onclick="addGraphic(this.src)" title="Dried Flower">
-                <img src="https://img.icons8.com/papercut/100/leaf.png" class="tool-img" onclick="addGraphic(this.src)">
-                <img src="https://img.icons8.com/plasticine/100/filled-star.png" class="tool-img" onclick="addGraphic(this.src)">
-                <img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/100/external-flower-nature-vitaliy-gorbachev-flat-vitaly-gorbachev-1.png" class="tool-img" onclick="addGraphic(this.src)">
+                <img src="https://img.icons8.com/illustrations/100/null/flower-delivery.png" class="tool-img" onclick="addGraphic(this.src)" title="Botanical">
+                <img src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-vitaly-gorbachev/100/c5a059/external-leaf-nature-vitaliy-gorbachev-lineal-vitaly-gorbachev.png" class="tool-img" onclick="addGraphic(this.src)" title="Elegant Leaf">
+                <img src="https://img.icons8.com/ios/100/c5a059/sparkling-diamond.png" class="tool-img" onclick="addGraphic(this.src)" title="Sparkle">
+                <img src="https://img.icons8.com/ios/100/c5a059/decorative-borders.png" class="tool-img" onclick="addGraphic(this.src)" title="Frame">
+                <img src="https://img.icons8.com/ios/100/c5a059/rose.png" class="tool-img" onclick="addGraphic(this.src)" title="Rose">
             </div>
 
             <div class="btn-group">
                 <button class="btn" onclick="location.reload()">Reset</button>
-                <button class="btn btn-save" onclick="saveImage()">Download Card</button>
+                <button class="btn btn-save" onclick="saveImage()">Save Your Card</button>
             </div>
-            <p style="font-size: 0.6rem; opacity: 0.6;">Drag graphics to position • Click them to rotate</p>
+            <p class="hint">Drag elements to decorate • Tap an element to rotate it</p>
         </div>
     </div>
 
@@ -142,6 +152,7 @@
         const colorPalette = [
             { hex: "#fffdf0", quote: "To love at all is to be vulnerable.", source: "C.S. Lewis", movie: "Shadowlands", book: "The Four Loves" },
             { hex: "#fce3e3", quote: "Everything that frightens us wants our love.", source: "Rainer Maria Rilke", movie: "The Shape of Water", book: "Letters to a Young Poet" },
+            { hex: "#f5ead0", quote: "Love is not blind; it sees more, not less.", source: "Erich Fromm", movie: "In the Mood for Love", book: "A Lover's Discourse" },
             { hex: "#e2ede4", quote: "The world is full of magic things.", source: "W.B. Yeats", movie: "Song of the Sea", book: "The Wind Among the Reeds" },
             { hex: "#e8e1f5", quote: "It is not necessary to hurry intimacy.", source: "Anne Carson", movie: "Before Sunset", book: "Eros the Bittersweet" }
         ];
@@ -149,22 +160,13 @@
         let shuffleState = 0;
         const deck = document.getElementById('deck-container');
 
-        // Initial Deck Creation
         function createDeck() {
-            for(let i=0; i<12; i++) {
+            for(let i=0; i<10; i++) {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.zIndex = i;
                 card.style.transform = `translate(${i*0.5}px, ${i*0.5}px)`;
-                card.onclick = () => {
-                    if(shuffleState < 3) {
-                        document.getElementById('snd-shuffle').play();
-                        runShuffle();
-                    } else if(shuffleState === 4) {
-                        document.getElementById('snd-reveal').play();
-                        revealCard();
-                    }
-                };
+                card.onclick = () => shuffleState < 3 ? runShuffle() : revealCard();
                 deck.appendChild(card);
             }
         }
@@ -175,7 +177,7 @@
             cards.forEach(c => {
                 c.style.transform = `translate(${(Math.random()-0.5)*400}px, ${(Math.random()-0.5)*400}px) rotate(${(Math.random()-0.5)*120}deg)`;
             });
-            document.getElementById('status-text').innerText = `MIXING THE GARDEN... (${shuffleState}/3)`;
+            document.getElementById('status-text').innerText = `CONSULTING THE SECRET GARDEN (${shuffleState}/3)`;
             if(shuffleState === 3) setTimeout(fanCards, 700);
         }
 
@@ -183,11 +185,11 @@
             shuffleState = 4;
             const cards = document.querySelectorAll('.card');
             cards.forEach((c, i) => {
-                const angle = (i - 5.5) * 8;
-                const x = (i - 5.5) * 45;
+                const angle = (i - 4.5) * 10;
+                const x = (i - 4.5) * 45;
                 c.style.transform = `translate(${x}px, 20px) rotate(${angle}deg)`;
             });
-            document.getElementById('status-text').innerText = "CHOOSE YOUR DESTINY";
+            document.getElementById('status-text').innerText = "DRAW YOUR CARD";
         }
 
         function revealCard() {
@@ -205,58 +207,71 @@
             }, 800);
         }
 
-        // ATELIER DECORATION SYSTEM
+        // DECORATION SYSTEM
         function addGraphic(src) {
             const img = document.createElement('img');
             img.src = src;
             img.className = 'graphic-item';
-            img.style.left = '100px';
-            img.style.top = '100px';
+            img.style.left = '130px';
+            img.style.top = '150px';
             let rot = 0;
 
-            // Rotate on click
             img.onclick = () => {
                 rot += 45;
                 img.style.transform = `rotate(${rot}deg)`;
             };
 
-            // Dragging Logic
+            // Enhanced Drag Logic
             let active = false;
-            img.addEventListener('mousedown', (e) => { active = true; e.preventDefault(); });
-            document.addEventListener('mousemove', (e) => {
-                if (!active) return;
-                const rect = document.getElementById('capture-frame').getBoundingClientRect();
-                img.style.left = (e.clientX - rect.left - 40) + 'px';
-                img.style.top = (e.clientY - rect.top - 40) + 'px';
-            });
-            document.addEventListener('mouseup', () => active = false);
+            let currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+            img.addEventListener("mousedown", dragStart);
+            document.addEventListener("mousemove", drag);
+            document.addEventListener("mouseup", dragEnd);
+
+            function dragStart(e) {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                if (e.target === img) active = true;
+            }
+
+            function drag(e) {
+                if (active) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    xOffset = currentX;
+                    yOffset = currentY;
+                    img.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rot}deg)`;
+                }
+            }
+            function dragEnd() { active = false; }
 
             document.getElementById('capture-frame').appendChild(img);
         }
 
-        // Falling Petals Logic
+        // Elegant Background Animation
         function createPetal() {
             const p = document.createElement('img');
-            p.src = "https://www.pngall.com/wp-content/uploads/11/Sakura-Petals-PNG-Images.png"; // High quality petal
+            p.src = "https://www.pngall.com/wp-content/uploads/11/Sakura-Petals-PNG-Images.png";
             p.className = 'petal';
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.width = (Math.random() * 20 + 10) + 'px';
-            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            p.style.opacity = Math.random() * 0.5 + 0.2;
+            p.style.width = (Math.random() * 15 + 8) + 'px';
+            p.style.animationDuration = (Math.random() * 6 + 6) + 's';
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 8000);
+            setTimeout(() => p.remove(), 10000);
         }
-        setInterval(createPetal, 400);
+        setInterval(createPetal, 500);
 
         function saveImage() {
             const btn = document.querySelector('.btn-save');
-            btn.innerText = "Processing...";
+            btn.innerText = "GATHERING...";
             html2canvas(document.getElementById('capture-frame'), { scale: 3, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Atelier_ISA_Card.png';
+                link.download = 'ISA_HeartToHeart_Card.png';
                 link.href = canvas.toDataURL();
                 link.click();
-                btn.innerText = "Download Card";
+                btn.innerText = "Save Your Card";
             });
         }
 
