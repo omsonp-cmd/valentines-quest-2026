@@ -24,17 +24,291 @@
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
         }
 
-        /* Falling Petals Background */
         .petal {
             position: fixed; top: -10%; z-index: 1;
             pointer-events: none; animation: fall linear infinite;
             background: white; border-radius: 150% 0 150% 0;
             opacity: 0.4; filter: blur(1px);
         }
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        #app-container { text-align: center; max-width: 100%; z-index: 10; padding: 20px; }
+
+        .deck-area { position: relative; height: 300px; width: 300px; margin: 0 auto; display: flex; justify-content: center; align-items: center; }
+        
+        .card {
+            position: absolute; width: 160px; height: 230px; background: var(--card-white);
+            border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            cursor: pointer; transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .card-inner-design {
+            position: absolute; inset: 12px; border: 1px solid var(--gold);
+            background-color: var(--deep-green); display: flex; align-items: center; justify-content: center;
+        }
+        .card-inner-design svg { width: 40px; fill: var(--gold); opacity: 0.9; }
+
+        #result-screen { display: none; opacity: 0; transition: 1s ease; }
+        
+        #capture-frame {
+            background: var(--card-white); padding: 45px; width: 350px; height: 480px;
+            margin: 0 auto; position: relative; border: 1px solid var(--border-soft);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.12); overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
         }
 
+        #capture-frame::before {
+            content: ''; position: absolute; inset: 18px;
+            border: 0.5px solid var(--gold); opacity: 0.4; pointer-events: none; z-index: 1;
+        }
+
+        .isa-header { font-size: 0.5rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; z-index: 2; font-weight: bold;}
+        .name-section { margin-bottom: 30px; width: 100%; z-index: 2;}
+        .for-label { font-family: 'Playfair Display', serif; font-size: 0.75rem; font-style: italic; color: #aaa; }
+        .user-name-input {
+            font-family: 'Pinyon Script', cursive; font-size: 2.2rem;
+            border: none; border-bottom: 0.5px solid var(--border-soft);
+            text-align: center; color: var(--deep-green); background: transparent;
+            width: 80%; outline: none; margin-top: 2px;
+        }
+
+        .quote-box { 
+            font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; 
+            line-height: 1.6; margin-top: auto; padding: 0 25px; z-index: 5; color: #1a1a1a;
+        }
+        .quote-author { font-size: 0.55rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.5; margin-top: 15px; margin-bottom: auto; z-index: 5; }
+
+        .rec-row { 
+            width: 100%; display: flex; justify-content: space-between; 
+            border-top: 0.3px solid #ddd; padding-top: 20px; margin-top: 30px; 
+            text-align: left; z-index: 2;
+        }
+        .rec-label { font-size: 0.45rem; color: var(--gold); letter-spacing: 2px; font-weight: 700; }
+        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.7rem; display: block; margin-top: 4px; font-style: italic; }
+
+        .decoration-svg {
+            position: absolute; cursor: move; z-index: 3;
+            width: 100px; height: 100px; transition: transform 0.1s;
+            user-select: none; pointer-events: auto; mix-blend-mode: multiply;
+        }
+
+        .atelier-toolbar {
+            margin-top: 25px; display: inline-flex; gap: 15px;
+            background: rgba(255,255,255,0.95); padding: 12px 20px; border-radius: 4px;
+            border: 0.5px solid var(--gold);
+        }
+        .tool-btn { width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .tool-btn svg { width: 28px; fill: var(--gold); }
+
+        .btn-group { margin-top: 30px; }
+        .btn {
+            background: none; border: 0.5px solid var(--gold); padding: 10px 25px;
+            text-transform: uppercase; letter-spacing: 3px; font-size: 0.6rem;
+            cursor: pointer; transition: 0.3s; margin: 0 5px;
+        }
+        .btn-save { background: var(--gold); color: white; }
+        .btn:hover { background: var(--deep-green); color: white; }
+        .hint { font-size: 0.55rem; opacity: 0.4; margin-top: 15px; letter-spacing: 2px; text-transform: uppercase; }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <div id="ritual-screen">
+            <p style="letter-spacing: 5px; font-size: 0.55rem; opacity: 0.6;">ATELIER ISA CHULALONGKORN</p>
+            <h1 style="font-family: 'Pinyon Script', cursive; font-size: 5.5rem; color: var(--gold); margin: 0;">Heart to Heart</h1>
+            <p style="letter-spacing: 8px; text-transform: uppercase; font-size: 0.75rem; margin-bottom: 40px;">Divine Selection</p>
+            <div class="deck-area" id="deck-container"></div>
+            <p id="status-text" style="letter-spacing: 3px; font-size: 0.6rem; margin-top: 30px; opacity: 0.7;">TAP TO SHUFFLE INTENTIONS</p>
+        </div>
+
+        <div id="result-screen">
+            <div id="capture-frame">
+                <div class="isa-header">Atelier ISA Correspondence</div>
+                <div class="name-section">
+                    <span class="for-label">Dedicated to</span><br>
+                    <input type="text" class="user-name-input" placeholder="Name" maxlength="22">
+                </div>
+
+                <div class="quote-box" id="quote-text"></div>
+                <div class="quote-author" id="quote-source"></div>
+                
+                <div class="rec-row">
+                    <div class="rec-item">
+                        <span class="rec-label">CINEMATIC</span>
+                        <span class="rec-val" id="movie-title"></span>
+                    </div>
+                    <div class="rec-item" style="text-align: right;">
+                        <span class="rec-label">LITERARY</span>
+                        <span class="rec-val" id="book-title"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="atelier-toolbar">
+                <div class="tool-btn" onclick="spawnDecoration('scroll')">
+                    <svg viewBox="0 0 100 100"><path d="M50 20c-15 0-20 10-20 10s5-5 10-5 10 5 10 10-5 10-10 10-10-5-10-10c0-10 10-20 20-20s20 10 20 20-10 20-20 20-20-10-20-20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                </div>
+                <div class="tool-btn" onclick="spawnDecoration('crown')">
+                    <svg viewBox="0 0 24 24"><path d="M5,16L3,5L8.5,10L12,4L15.5,10L21,5L19,16H5M19,19C19,19.6 18.6,20 18,20H6C5.4,20 5,19.6 5,19V18H19V19Z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+                </div>
+                <div class="tool-btn" onclick="spawnDecoration('fleur')">
+                    <svg viewBox="0 0 24 24"><path d="M12,21C11,21 9,20 9,18C9,17 10,16 11,15C8,15 5,14 5,11C5,9 6,5 12,2C18,5 19,9 19,11C19,14 16,15 13,15C14,16 15,17 15,18C15,20 13,21 12,21M12,14C14.5,14 16.5,13 17,11C17,9.5 16,7 12,4.5C8,7 7,9.5 7,11C7.5,13 9.5,14 12,14Z"/></svg>
+                </div>
+                <div class="tool-btn" onclick="spawnDecoration('wreath')">
+                    <svg viewBox="0 0 24 24"><path d="M12,2C12,2 10.5,5.5 12,9C13.5,12.5 17,14 17,14C17,14 13.5,13.5 11,16C8.5,18.5 8,22 8,22C8,22 8.5,18.5 6,17C3.5,15.5 1,15 1,15C1,15 4.5,14.5 6,11C7.5,7.5 7,3 7,3C7,3 8.5,6.5 12,2Z"/></svg>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" onclick="location.reload()">Reset</button>
+                <button class="btn btn-save" onclick="saveImage()">Download Card</button>
+            </div>
+            <p class="hint">Double-click to rotate decorations</p>
+        </div>
+    </div>
+
+    <script>
+        const colorPalette = [
+            { hex: "#fffdf0", quote: "To love at all is to be vulnerable.", source: "C.S. Lewis", movie: "Shadowlands", book: "The Four Loves" },
+            { hex: "#fce3e3", quote: "Everything that frightens us wants our love.", source: "Rainer Maria Rilke", movie: "The Shape of Water", book: "Letters to a Young Poet" },
+            { hex: "#f5ead0", quote: "Love is not blind; it sees more, not less.", source: "Erich Fromm", movie: "In the Mood for Love", book: "A Lover's Discourse" },
+            { hex: "#e2ede4", quote: "The world is full of magic things.", source: "W.B. Yeats", movie: "Song of the Sea", book: "The Wind Among the Reed" },
+            { hex: "#e8e1f5", quote: "It is not necessary to hurry intimacy.", source: "Anne Carson", movie: "Before Sunset", book: "Eros the Bittersweet" }
+        ];
+
+        let shuffleState = 0;
+        const deck = document.getElementById('deck-container');
+        const fleurSVG = `<svg viewBox="0 0 24 24"><path d="M12,21C11,21 9,20 9,18C9,17 10,16 11,15C8,15 5,14 5,11C5,9 6,5 12,2C18,5 19,9 19,11C19,14 16,15 13,15C14,16 15,17 15,18C15,20 13,21 12,21M12,14C14.5,14 16.5,13 17,11C17,9.5 16,7 12,4.5C8,7 7,9.5 7,11C7.5,13 9.5,14 12,14Z"/></svg>`;
+
+        function createDeck() {
+            for(let i=0; i<8; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.zIndex = i;
+                card.style.transform = `translate(${i*1}px, ${i*1}px)`;
+                card.innerHTML = `<div class="card-inner-design">${fleurSVG}</div>`;
+                card.onclick = () => shuffleState < 3 ? runShuffle() : revealCard();
+                deck.appendChild(card);
+            }
+        }
+
+        function runShuffle() {
+            shuffleState++;
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(c => {
+                c.style.transform = `translate(${(Math.random()-0.5)*300}px, ${(Math.random()-0.5)*300}px) rotate(${(Math.random()-0.5)*90}deg)`;
+            });
+            document.getElementById('status-text').innerText = `SHUFFLING (${shuffleState}/3)`;
+            if(shuffleState === 3) setTimeout(fanCards, 700);
+        }
+
+        function fanCards() {
+            shuffleState = 4;
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((c, i) => {
+                const angle = (i - 3.5) * 12;
+                const x = (i - 3.5) * 42;
+                c.style.transform = `translate(${x}px, 10px) rotate(${angle}deg)`;
+            });
+            document.getElementById('status-text').innerText = "SELECT AN INTENTION";
+        }
+
+        function revealCard() {
+            const data = colorPalette[Math.floor(Math.random()*colorPalette.length)];
+            document.getElementById('ritual-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('ritual-screen').style.display = 'none';
+                document.getElementById('result-screen').style.display = 'block';
+                document.body.style.backgroundColor = data.hex;
+                document.getElementById('quote-text').innerText = data.quote;
+                document.getElementById('quote-source').innerText = `— ${data.source}`;
+                document.getElementById('movie-title').innerText = data.movie;
+                document.getElementById('book-title').innerText = data.book;
+                setTimeout(() => document.getElementById('result-screen').style.opacity = '1', 50);
+            }, 800);
+        }
+
+        const svgPaths = {
+            scroll: '<path d="M10 20 C 30 10, 70 10, 90 20 M10 80 C 30 90, 70 90, 90 80 M20 20 L 20 80 M80 20 L 80 80 M15 25 C 15 10, 30 10, 30 25 M70 75 C 70 90, 85 90, 85 75" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+            crown: '<path d="M4 18 L 2 7 L 8 12 L 12 4 L 16 12 L 22 7 L 20 18 H 4 M4 20 H 20" fill="none" stroke="currentColor" stroke-width="1.2"/>',
+            fleur: '<path d="M12,21C11,21 9,20 9,18C9,17 10,16 11,15C8,15 5,14 5,11C5,9 6,5 12,2C18,5 19,9 19,11C19,14 16,15 13,15C14,16 15,17 15,18C15,20 13,21 12,21M12,14C14.5,14 16.5,13 17,11C17,9.5 16,7 12,4.5C8,7 7,9.5 7,11C7.5,13 9.5,14 12,14Z" fill="url(#goldGrad)"/>',
+            wreath: '<path d="M12 4 C 10 8, 8 12, 10 16 C 12 20, 16 18, 16 18 M12 4 C 14 8, 16 12, 14 16 C 12 20, 8 18, 8 18" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+        };
+
+        function spawnDecoration(type) {
+            const container = document.getElementById('capture-frame');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'decoration-svg';
+            wrapper.style.left = '125px'; wrapper.style.top = '190px';
+            
+            wrapper.innerHTML = `
+                <svg viewBox="0 0 24 24" style="width:100%; height:100%;">
+                    <defs>
+                        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#c5a059;" />
+                            <stop offset="50%" style="stop-color:#f4e4bc;" />
+                            <stop offset="100%" style="stop-color:#a67c33;" />
+                        </linearGradient>
+                    </defs>
+                    <g stroke="url(#goldGrad)" fill="none" stroke-width="0.8">
+                        ${svgPaths[type]}
+                    </g>
+                </svg>`;
+
+            if(type === 'fleur') wrapper.querySelector('g').setAttribute('fill', 'url(#goldGrad)');
+
+            let rot = 0;
+            let active = false, currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
+
+            wrapper.addEventListener("dblclick", () => {
+                rot += 45;
+                wrapper.style.transform = `translate(${xOffset}px, ${yOffset}px) rotate(${rot}deg)`;
+            });
+
+            wrapper.addEventListener("mousedown", (e) => {
+                initialX = e.clientX - xOffset; initialY = e.clientY - yOffset;
+                active = true;
+            });
+
+            document.addEventListener("mousemove", (e) => {
+                if (active) {
+                    currentX = e.clientX - initialX; currentY = e.clientY - initialY;
+                    xOffset = currentX; yOffset = currentY;
+                    wrapper.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rot}deg)`;
+                }
+            });
+
+            document.addEventListener("mouseup", () => active = false);
+            container.appendChild(wrapper);
+        }
+
+        function createPetal() {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.width = (Math.random() * 8 + 4) + 'px';
+            p.style.height = (Math.random() * 8 + 4) + 'px';
+            p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 8000);
+        }
+        setInterval(createPetal, 700);
+
+        function saveImage() {
+            html2canvas(document.getElementById('capture-frame'), { scale: 3, useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Atelier_ISA_Private_Correspondence.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        createDeck();
+    </script>
+</body>
+</html>
         #app-container { text-align: center; max-width: 100%; z-index: 10; padding: 20px; }
 
         /* Deck Ritual Section */
