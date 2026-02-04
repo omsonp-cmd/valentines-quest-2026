@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heart to Heart | ISA Chulalongkorn</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&family=Pinyon+Script&display=swap');
 
@@ -12,7 +13,7 @@
             --deep-green: #1a2a1d;
             --cream: #f8f5f0;
             --blush: #e8d5d1;
-            --card-shadow: 0 20px 45px rgba(0,0,0,0.12);
+            --chula-pink: #ed82ad;
         }
 
         body { 
@@ -24,285 +25,257 @@
             justify-content: center; 
             align-items: center;
             min-height: 100vh; 
-            transition: background-color 2.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
         }
 
-        /* Immersion Elements */
-        .vignette {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle, transparent 40%, rgba(26, 42, 29, 0.15));
-            pointer-events: none;
-            z-index: 5;
+        /* Background Petals */
+        .petal {
+            position: fixed; background: var(--blush); opacity: 0.3;
+            border-radius: 150% 0 150% 0; pointer-events: none;
+            z-index: 1; animation: falling 12s linear infinite;
+        }
+        @keyframes falling {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Refined Botanical Accents */
-        .botanical {
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            opacity: 0.25;
-            pointer-events: none;
-            z-index: 0;
-            filter: sepia(20%) contrast(90%);
-        }
-        .top-left { top: -100px; left: -100px; transform: rotate(10deg); }
-        .bottom-right { bottom: -100px; right: -100px; transform: rotate(190deg); }
+        #app-container { text-align: center; max-width: 1000px; width: 100%; z-index: 10; padding: 20px; }
 
-        #app-container { text-align: center; max-width: 1000px; padding: 20px; width: 100%; z-index: 10; }
+        .isa-tag { font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
+        h1.main-title { font-family: 'Pinyon Script', cursive; font-size: 5rem; color: var(--gold); margin: 0; line-height: 0.8; }
+        .sub-theme { font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: 8px; text-transform: uppercase; margin-bottom: 40px; }
 
-        /* Typography */
-        .isa-header {
-            font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase;
-            margin-bottom: 20px; opacity: 0.8; font-weight: 400;
-        }
-
-        h1 {
-            font-family: 'Pinyon Script', cursive; 
-            font-size: 4.5rem; color: var(--gold);
-            margin: 0; font-weight: 400;
-        }
-
-        .event-theme {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem; letter-spacing: 12px; text-transform: uppercase;
-            margin-bottom: 40px; color: var(--deep-green); opacity: 0.9;
-        }
-
-        /* Deck Mechanics */
-        .deck-area {
-            position: relative;
-            height: 450px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
+        /* Deck Area */
+        .deck-area { position: relative; height: 350px; width: 100%; display: flex; justify-content: center; align-items: center; }
         .card {
-            position: absolute;
-            width: 180px;
-            height: 270px;
-            background: #fff;
-            border-radius: 3px;
-            box-shadow: var(--card-shadow);
-            cursor: pointer;
-            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
-            overflow: hidden;
+            position: absolute; width: 180px; height: 260px; background: #fff;
+            border-radius: 2px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            cursor: pointer; transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
-
         .card::after {
-            content: '';
-            position: absolute;
-            inset: 10px;
-            border: 1px solid var(--gold);
-            background-color: var(--deep-green);
-            background-image: url("https://www.transparenttextures.com/patterns/bouvet.png");
-        }
-
-        .card-inner-crest {
-            position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: var(--gold); font-family: 'Playfair Display', serif;
-            font-style: italic; font-size: 1.8rem; z-index: 2; opacity: 0.7;
+            content: ''; position: absolute; inset: 10px; border: 1px solid var(--gold);
+            background-color: var(--deep-green); background-image: url("https://www.transparenttextures.com/patterns/dark-matter.png");
         }
 
         /* Result View */
-        #result-screen { display: none; opacity: 0; }
+        #result-screen { display: none; opacity: 0; transition: 1s ease; }
         
-        .result-content {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 70px 50px;
-            border: 0.5px solid rgba(197, 160, 89, 0.3);
+        #capture-frame {
+            background: #fff;
+            padding: 50px 30px;
+            width: 340px;
+            min-height: 500px;
+            margin: 0 auto;
             position: relative;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.08);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.1);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            overflow: hidden;
         }
 
-        .quote-display {
-            font-family: 'Playfair Display', serif; font-size: 2.5rem;
-            line-height: 1.3; margin: 30px 0; color: var(--deep-green);
+        .decoration {
+            position: absolute; cursor: move; z-index: 100;
+            user-select: none; font-size: 2.2rem; transition: transform 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .decoration-line {
-            width: 60px; height: 1px; background: var(--gold);
-            margin: 20px auto;
+        /* Interaction Tools */
+        .toolbar {
+            margin-top: 25px; background: white;
+            padding: 10px 20px; border-radius: 40px; display: inline-flex; gap: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 1px solid var(--gold);
         }
+        .tool { font-size: 1.6rem; cursor: pointer; transition: 0.3s; }
+        .tool:hover { transform: translateY(-5px) scale(1.2); }
 
-        .rec-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-            text-align: left; margin-top: 40px; padding-top: 30px;
-            border-top: 1px solid rgba(0,0,0,0.05);
+        .quote-box { font-family: 'Playfair Display', serif; font-size: 1.7rem; line-height: 1.3; margin: 45px 0 20px; font-style: italic; }
+        .quote-author { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; margin-bottom: 40px; }
+
+        .rec-row { display: flex; justify-content: space-between; text-align: left; padding-top: 25px; border-top: 0.5px solid rgba(0,0,0,0.1); }
+        .rec-label { font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+        .rec-val { font-family: 'Playfair Display', serif; font-size: 0.85rem; display: block; margin-top: 3px; }
+
+        .btn-group { margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
+        .btn {
+            background: none; border: 1px solid var(--gold); padding: 12px 28px;
+            font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 2px;
+            font-size: 0.7rem; cursor: pointer; transition: 0.3s;
         }
+        .btn-save { background: var(--gold); color: white; }
 
-        .rec-label { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; display: block; }
-        .rec-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; display: block; }
-
-        /* Actions */
-        .button-group { margin-top: 50px; display: flex; justify-content: center; gap: 20px; }
-        
-        .btn-action {
-            background: none; border: 1px solid var(--gold);
-            padding: 12px 30px; font-family: 'Lato', sans-serif;
-            text-transform: uppercase; letter-spacing: 3px; font-size: 0.7rem;
-            cursor: pointer; transition: 0.3s; color: var(--deep-green);
-        }
-
-        .btn-action:hover { background: var(--gold); color: white; }
-
-        .btn-save { border-color: var(--deep-green); opacity: 0.6; }
-
-        /* Screenshot Mode */
-        .screenshot-mode .btn-action, .screenshot-mode .isa-header { display: none; }
-        .screenshot-mode .result-content { border: none; background: none; box-shadow: none; }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 3rem; }
-            .event-theme { font-size: 0.8rem; letter-spacing: 6px; }
-            .rec-grid { grid-template-columns: 1fr; }
-        }
+        .hint { font-size: 0.6rem; margin-top: 15px; opacity: 0.5; font-style: italic; }
     </style>
 </head>
 <body>
 
-    <div class="vignette"></div>
-    <img src="https://www.transparenttextures.com/patterns/flowers.png" class="botanical top-left" alt="decor">
-    <img src="https://www.transparenttextures.com/patterns/flowers.png" class="botanical bottom-right" alt="decor">
-
     <div id="app-container">
         <div id="ritual-screen">
-            <p class="isa-header">International Student Affairs (ISA) • Chulalongkorn University</p>
-            <h1>Heart to Heart</h1>
-            <p class="event-theme">Le Jardin Secret</p>
-            
+            <p class="isa-tag">ISA Chulalongkorn</p>
+            <h1 class="main-title">Heart to Heart</h1>
+            <p class="sub-theme">Le Jardin Secret</p>
             <div class="deck-area" id="deck-container"></div>
-
-            <p class="subtitle" id="status-text" style="margin-top: 40px; font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase;">Tap to begin the ritual</p>
+            <p id="status-text" style="margin-top: 30px; letter-spacing: 4px; font-size: 0.7rem;">TAP TO SHUFFLE</p>
         </div>
 
         <div id="result-screen">
-            <div class="result-content" id="capture-area">
-                <span class="isa-header" style="opacity: 0.5;">ISA Chulalongkorn Presents</span>
-                <div class="decoration-line"></div>
-                <div class="quote-display" id="quote-text"></div>
-                <p style="font-family: 'Pinyon Script'; font-size: 1.8rem; color: var(--gold);" id="quote-source"></p>
+            <div id="capture-frame">
+                <span style="font-size: 0.5rem; letter-spacing: 4px; color: var(--gold);">ISA CHULALONGKORN</span>
+                <h2 style="font-family: 'Pinyon Script', cursive; font-size: 2.8rem; margin: 5px 0;">Heart to Heart</h2>
                 
-                <div class="rec-grid">
-                    <div class="rec-item">
-                        <span class="rec-label">Cinematic</span>
-                        <span class="rec-title" id="movie-title"></span>
-                    </div>
-                    <div class="rec-item">
-                        <span class="rec-label">Literary</span>
-                        <span class="rec-title" id="book-title"></span>
-                    </div>
+                <div class="quote-box" id="quote-text"></div>
+                <div class="quote-author" id="quote-source"></div>
+                
+                <div class="rec-row">
+                    <div><span class="rec-label">Cinematic</span><span class="rec-val" id="movie-title"></span></div>
+                    <div><span class="rec-label">Literary</span><span class="rec-val" id="book-title"></span></div>
                 </div>
             </div>
 
-            <div class="button-group">
-                <button class="btn-action" onclick="location.reload()">New Ritual</button>
-                <button class="btn-action btn-save" onclick="prepareShare()">Instagram Mode</button>
+            <div class="toolbar">
+                <span class="tool" onclick="addDec('🌸')" title="Cherry Blossom">🌸</span>
+                <span class="tool" onclick="addDec('🌿')" title="Fern">🌿</span>
+                <span class="tool" onclick="addDec('✨')" title="Sparkles">✨</span>
+                <span class="tool" onclick="addDec('❦')" title="Crest">❦</span>
+                <span class="tool" onclick="addDec('📍')" style="filter: hue-rotate(150deg);" title="Chula Pink">📍</span>
             </div>
-            <p id="share-note" style="display:none; font-size: 0.7rem; margin-top: 15px; opacity: 0.5;">Screenshot to save your card. Tap anywhere to return.</p>
+
+            <div class="btn-group">
+                <button class="btn" onclick="location.reload()">Reset</button>
+                <button class="btn btn-save" onclick="saveImage()">Save Picture</button>
+            </div>
+            <p class="hint">Drag to move • Click stickers to rotate</p>
         </div>
     </div>
 
     <script>
         const colorPalette = [
-            { hex: "#fffdf0", quote: "To love at all is to be vulnerable.", source: "C.S. Lewis", movie: "Shadowlands", book: "The Four Loves" },
-            { hex: "#f5ead0", quote: "Love is not blind; it sees more, not less.", source: "Erich Fromm", movie: "In the Mood for Love", book: "A Lover's Discourse" },
-            { hex: "#fce3e3", quote: "Everything that frightens us wants our love.", source: "Rainer Maria Rilke", movie: "The Shape of Water", book: "Letters to a Young Poet" },
-            { hex: "#e8e1f5", quote: "It is not necessary to hurry intimacy.", source: "Anne Carson", movie: "Before Sunset", book: "Eros the Bittersweet" },
-            { hex: "#e2ede4", quote: "The world is full of magic things.", source: "W.B. Yeats", movie: "Song of the Sea", book: "The Wind Among the Reeds" },
-            { hex: "#ecebbd", quote: "Plunge into the change.", source: "Alan Watts", movie: "Spring, Summer, Fall...", book: "The Wisdom of Insecurity" },
-            { hex: "#e0f0f5", quote: "Solitude is the richness of self.", source: "May Sarton", movie: "Lost in Translation", book: "Journal of a Solitude" },
-            { hex: "#ede6e1", quote: "Acceptance is a small, quiet room.", source: "Cheryl Strayed", movie: "Nomadland", book: "Tiny Beautiful Things" },
-            { hex: "#f5e6d3", quote: "Beauty is in things imperfect.", source: "Leonard Koren", movie: "Arrietty", book: "The Beauty of the Ordinary" },
-            { hex: "#e1e6e8", quote: "The realization that something else is real.", source: "Iris Murdoch", movie: "Eternal Sunshine", book: "The Sovereignty of Good" },
-            { hex: "#fcfaf7", quote: "A relationship with love itself.", source: "Søren Kierkegaard", movie: "Still Walking", book: "Works of Love" },
-            { hex: "#f0f0f0", quote: "Love is unworldly.", source: "Hannah Arendt", movie: "A Hidden Life", book: "The Human Condition" },
-            { hex: "#e3e3e3", quote: "To be alone is to be with the world.", source: "Maurice Blanchot", movie: "Taste of Cherry", book: "The Space of Literature" },
-            { hex: "#ededeb", quote: "Nothing is missing.", source: "Gilles Deleuze", movie: "Columbus", book: "Negotiations" },
-            { hex: "#f3eddc", quote: "Love is an act of faith.", source: "Erich Fromm", movie: "Ordet", book: "The Art of Loving" },
-            { hex: "#e6dede", quote: "Grief is the final manifestation of love.", source: "Joan Didion", movie: "Aftersun", book: "Blue Nights" }
+            { name: "Ivory Silk", hex: "#fffdf0", quote: "To love at all is to be vulnerable.", source: "C.S. Lewis", movie: "Shadowlands", book: "The Four Loves" },
+            { name: "Vintage Champagne", hex: "#f5ead0", quote: "Love is not blind; it sees more, not less.", source: "Erich Fromm", movie: "In the Mood for Love", book: "A Lover's Discourse" },
+            { name: "Tudor Rose", hex: "#fce3e3", quote: "Everything that frightens us is something helpless that wants our love.", source: "Rainer Maria Rilke", movie: "The Shape of Water", book: "Letters to a Young Poet" },
+            { name: "English Lavender", hex: "#e8e1f5", quote: "It is not necessary to hurry intimacy.", source: "Anne Carson", movie: "Before Sunset", book: "Eros the Bittersweet" },
+            { name: "Versailles Sage", hex: "#e2ede4", quote: "The world is full of magic things, patiently waiting for our senses to grow sharper.", source: "W.B. Yeats", movie: "Song of the Sea", book: "The Wind Among the Reeds" },
+            { name: "Gilded Moss", hex: "#ecebbd", quote: "The only way to make sense out of change is to plunge into it.", source: "Alan Watts", movie: "Spring, Summer...", book: "Wisdom of Insecurity" },
+            { name: "Biedermeier Blue", hex: "#e0f0f5", quote: "Loneliness is the poverty of self; solitude is the richness of self.", source: "May Sarton", movie: "Lost in Translation", book: "Journal of a Solitude" },
+            { name: "Old Manor Taupe", hex: "#ede6e1", quote: "Acceptance is a small, quiet room.", source: "Cheryl Strayed", movie: "Nomadland", book: "Tiny Beautiful Things" },
+            { name: "Terracotta Sundial", hex: "#f5e6d3", quote: "Beauty is in things imperfect, impermanent, and incomplete.", source: "Leonard Koren", movie: "Arrietty", book: "The Beauty of Ordinary" },
+            { name: "Slate Manor", hex: "#e1e6e8", quote: "Love is the extremely difficult realization that something other than oneself is real.", source: "Iris Murdoch", movie: "Eternal Sunshine", book: "Sovereignty of Good" },
+            { name: "Linen Prayer", hex: "#fcfaf7", quote: "Love is not a relationship between people, but a relationship with love itself.", source: "Søren Kierkegaard", movie: "Still Walking", book: "Works of Love" },
+            { name: "Orchard Ash", hex: "#f0f0f0", quote: "Love, by its very nature, is unworldly.", source: "Hannah Arendt", movie: "A Hidden Life", book: "The Human Condition" },
+            { name: "Cemetery Stone", hex: "#e3e3e3", quote: "To be alone is to be with the world without intermediaries.", source: "Maurice Blanchot", movie: "Taste of Cherry", book: "The Space of Literature" },
+            { name: "Pale Concrete", hex: "#ededeb", quote: "Nothing is missing. Something is simply not added.", source: "Gilles Deleuze", movie: "Columbus", book: "Negotiations" },
+            { name: "Oat Chapel", hex: "#f3eddc", quote: "Love is an act of faith, and whoever is of little faith is of little love.", source: "Erich Fromm", movie: "Ordet", book: "The Art of Loving" },
+            { name: "Ash Rose", hex: "#e6dede", quote: "Grief is the final manifestation of love.", source: "Joan Didion", movie: "Aftersun", book: "Blue Nights" }
         ];
 
+        let shuffleState = 0;
         const deck = document.getElementById('deck-container');
-        const status = document.getElementById('status-text');
-        let shuffleState = 0; 
 
         function createDeck() {
-            for(let i=0; i<16; i++) {
+            for(let i=0; i<12; i++) {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.zIndex = i;
-                card.innerHTML = '<div class="card-inner-crest">H</div>';
                 card.style.transform = `translate(${i*0.5}px, ${i*0.5}px)`;
-                card.onclick = () => handleCardClick();
+                card.onclick = () => shuffleState < 3 ? runShuffle() : revealCard();
                 deck.appendChild(card);
             }
-        }
-
-        function handleCardClick() {
-            if (shuffleState < 3) runShuffle();
-            else if (shuffleState === 4) revealCard();
         }
 
         function runShuffle() {
             shuffleState++;
             const cards = document.querySelectorAll('.card');
-            cards.forEach((card, i) => {
-                const randomX = (Math.random() - 0.5) * 450;
-                const randomY = (Math.random() - 0.5) * 450;
-                const randomRot = (Math.random() - 0.5) * 120;
-                card.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRot}deg)`;
+            cards.forEach(c => {
+                const rx = (Math.random()-0.5)*350;
+                const ry = (Math.random()-0.5)*350;
+                const rr = (Math.random()-0.5)*80;
+                c.style.transform = `translate(${rx}px, ${ry}px) rotate(${rr}deg)`;
             });
-            status.innerText = `Consulting the heart... (${shuffleState}/3)`;
-            setTimeout(() => {
-                cards.forEach((card, i) => card.style.transform = `translate(${i*0.3}px, ${i*0.3}px) rotate(0deg)`);
-                if (shuffleState === 3) setTimeout(fanCards, 600);
-            }, 800);
+            document.getElementById('status-text').innerText = `CONSULTING THE GARDEN (${shuffleState}/3)`;
+            if(shuffleState === 3) setTimeout(fanCards, 600);
         }
 
         function fanCards() {
             const cards = document.querySelectorAll('.card');
-            shuffleState = 4;
-            status.innerText = "Select a fragment of the garden.";
-            cards.forEach((card, i) => {
-                const angle = (i - 7.5) * 6;
-                const x = (i - 7.5) * 45;
-                const y = Math.abs(i - 7.5) * 6;
-                card.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
+            cards.forEach((c, i) => {
+                const angle = (i - 5.5) * 8;
+                const x = (i - 5.5) * 45;
+                c.style.transform = `translate(${x}px, 20px) rotate(${angle}deg)`;
             });
+            document.getElementById('status-text').innerText = "DRAW YOUR SECRET";
         }
 
         function revealCard() {
-            const data = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+            const data = colorPalette[Math.floor(Math.random()*colorPalette.length)];
             document.getElementById('ritual-screen').style.opacity = '0';
-            document.body.style.backgroundColor = data.hex;
             setTimeout(() => {
                 document.getElementById('ritual-screen').style.display = 'none';
-                const res = document.getElementById('result-screen');
-                res.style.display = 'block';
+                document.getElementById('result-screen').style.display = 'block';
+                document.body.style.backgroundColor = data.hex;
                 document.getElementById('quote-text').innerText = data.quote;
-                document.getElementById('quote-source').innerText = data.source;
+                document.getElementById('quote-source').innerText = `— ${data.source}`;
                 document.getElementById('movie-title').innerText = data.movie;
                 document.getElementById('book-title').innerText = data.book;
-                setTimeout(() => { res.style.opacity = '1'; }, 100);
-            }, 1200);
+                setTimeout(() => document.getElementById('result-screen').style.opacity = '1', 100);
+            }, 800);
         }
 
-        function prepareShare() {
-            document.body.classList.add('screenshot-mode');
-            document.getElementById('share-note').style.display = 'block';
-            
-            const exitHandler = () => {
-                document.body.classList.remove('screenshot-mode');
-                document.getElementById('share-note').style.display = 'none';
-                window.removeEventListener('click', exitHandler);
+        // DECORATION SYSTEM (Drag & Rotate)
+        function addDec(emoji) {
+            const el = document.createElement('div');
+            el.className = 'decoration';
+            el.innerText = emoji;
+            el.style.left = '40%';
+            el.style.top = '40%';
+            let rot = 0;
+
+            // Click to Rotate
+            el.onclick = (e) => {
+                rot += 45;
+                el.style.transform = `rotate(${rot}deg)`;
             };
-            setTimeout(() => window.addEventListener('click', exitHandler), 100);
+
+            // Drag logic
+            let active = false;
+            el.onmousedown = (e) => { active = true; e.preventDefault(); };
+            document.onmousemove = (e) => {
+                if (!active) return;
+                const rect = document.getElementById('capture-frame').getBoundingClientRect();
+                el.style.left = (e.clientX - rect.left - 20) + 'px';
+                el.style.top = (e.clientY - rect.top - 20) + 'px';
+            };
+            document.onmouseup = () => active = false;
+            
+            // Touch Support
+            el.ontouchmove = (e) => {
+                const rect = document.getElementById('capture-frame').getBoundingClientRect();
+                el.style.left = (e.touches[0].clientX - rect.left - 20) + 'px';
+                el.style.top = (e.touches[0].clientY - rect.top - 20) + 'px';
+            };
+
+            document.getElementById('capture-frame').appendChild(el);
+        }
+
+        function saveImage() {
+            html2canvas(document.getElementById('capture-frame'), { scale: 3 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'ISA_HeartToHeart.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        // Ambient Petals
+        for(let i=0; i<12; i++) {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.width = (Math.random()*15+5)+'px';
+            p.style.height = (Math.random()*15+5)+'px';
+            p.style.animationDelay = (Math.random()*12)+'s';
+            document.body.appendChild(p);
         }
 
         createDeck();
